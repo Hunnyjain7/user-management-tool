@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="container">
+    <div class="container">
+        <h1>Profile</h1>
+    </div>
+
+    <div class="container">
+        <form type="submit" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {% if messages %}
+            <div class="alert alert-danger" role="alert">
+                {% for message in messages %}
+                {{ message }}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div  class="container">
+                <div class="form-group container">
+                    <label for="exampleFormControlFile1">Profile Picture</label>
+                    <br>
+                            <img class="rounded-circle col-3" src="/media/{{user.profile_image}}" style="width: 135px; height: 135px;" alt=""> 
+
+                  </div>
+                <div class="row container">
+                    <div class="col">
+                    <label for="inputState">First name</label>
+
+                    <input type="text" name="first_name" value="{{ user.first_name }}" class="form-control" placeholder="First name" required>
+                    </div>
+                    <div class="col">
+                    <label for="inputState">Last name</label>
+
+                    <input type="text" name="last_name"  value="{{ user.last_name }}" class="form-control" placeholder="Last name" required>
+                    </div>
+                </div>
+                <div class="row container">
+                    <div class="col">
+                    <label for="inputState">Username</label>
+
+                    <input type="text" name="username" value="{{ user.username }}" class="form-control" placeholder="Username" required>
+                    </div>
+                    <div class="col">
+                    <label for="inputState">Gender</label>
+                    <select id="inputState" name="gender" class="form-control">
+                        <option name="gender" value="{{ user.gender.id }}" selected>{{ user.gender.gender_initial }}</option>
+                        {% for gender in context %}
+                        {% if user.gender.gender_initial != gender.gender_initial %}
+                        <option  value="{{ gender.id }}">{{ gender.gender_initial }}</option>
+                        {% endif %}
+
+                        {% endfor %}
+                    </select>
+                  
+                    </div>
+                </div>
+                
+                <div class="form-group container">
+                  <label for="exampleInputEmail1">Designation</label>
+                  <input type="text" name="designation" value="{{ user.designation }}"  class="form-control" id="designation" required>
+                </div>
+
+                <div class="row container">
+                    <div class="col">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" name="email" value="{{ user.email }}" class="form-control col" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                    </div>
+                    <div class="col">
+                    <label>Mobile Number</label>
+                    <input type="number" name="mobile_no" value="{{ user.mobile_no }}" class="form-control col" id="exampleInputEmail1" aria-describedby="emailHelp" required>
+                  
+                    </div>
+                </div>
+                <div class="form-group container">
+                  <br>
+                  <button type="submit" class="btn btn-primary">Update Profile</button>
+                </div>
+                
+            </div>
+            
+          </form>
+    </div>
+</div>
+
+{% endblock %}
