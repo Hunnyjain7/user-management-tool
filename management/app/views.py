@@ -9,8 +9,11 @@ from django.contrib import messages
 class Register(View):
     def get(self, request):
         try:
-            gender = UsrGender.objects.all()
-            return render(request, 'register.html', {"context": gender})
+            if 'id' in request.session:
+                return redirect('homepage')
+            else:
+                gender = UsrGender.objects.all()
+                return render(request, 'register.html', {"context": gender})
         except Exception as e:
             print(e)
             return redirect('login')
@@ -67,7 +70,6 @@ class Register(View):
                 error_message = 'Username already exists !!'
             if not error_message:
                 user_code = 'USR' + str(random.randint(9999, 9999999))
-                print(user_code)
                 gender_obj = UsrGender.objects.get(id=gender)
                 profile = UsrUser(
                     first_name=first_name, last_name=last_name, username=username, email=email, user_code=user_code,
@@ -100,7 +102,6 @@ class LogIn(View):
             email = request.POST.get('email')
             password = request.POST.get('password')
             user = UsrUser.objects.filter(email=email).filter(password=password)
-            print(user)
             if user.exists():
                 request.session['id'] = user[0].id
                 return redirect('homepage')
