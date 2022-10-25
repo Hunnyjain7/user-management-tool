@@ -1,4 +1,3 @@
-# user-management-tool
 ## User Management Tool
 
 A User management system with custom user creation with the custom forms of templates in django
