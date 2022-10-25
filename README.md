@@ -8,6 +8,7 @@ The easiest approach towards the django implementation without using django form
 * PYTHON VERSION 3.7.8
 * DJANGO VERSION 3.2.15
 
+'''
 step 1: Extract the zip
 step 2: cd PracticalTestByHunny
 step 3: python -m pip install virtualenv
@@ -27,3 +28,4 @@ step 8: cd management
 step 9: python manage.py makemigrations
 step 10: python manage.py migrate
 step 11: python manage.py runserver
+'''
