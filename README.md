@@ -7,7 +7,7 @@ The easiest approach towards the django implementation without using django form
 * PYTHON VERSION 3.7.8
 * DJANGO VERSION 3.2.15
 
-#3 Run App
+# Run App
 
 '''
 step 1: Extract the zip
