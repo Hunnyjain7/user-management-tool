@@ -1,7 +1,4 @@
-{% extends 'base.html' %}
-
-{% block content %}
-
+{% extends 'base.html' %} {% block content %}
 
 <div class="container">
     <div class="container">
@@ -9,23 +6,18 @@
     </div>
 
     <div class="container">
-            {% if messages %}
-      
-            {% for message in messages %} 
-            <div class="alert alert-success" role="alert" id="message">
-            
+        {% if messages %} {% for message in messages %}
+        <div class="alert alert-success" role="alert" id="message">
             {{ message }}
-            </div>
-      
-            {% endfor %}
-      
-            {% endif %}
-      
+        </div>
+
+        {% endfor %} {% endif %}
+
         <div class="container">
             <a href="/update" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Update Profile</a>
-            <button class="btn btn-danger btn-lg active" role="button" aria-pressed="true" onclick="btnClick()">Delete Profile</button>
-            
-            <!-- <a href="" class="btn btn-danger btn-lg active" role="button" aria-pressed="true" onclick="btnClick()">Delete Profile</a> -->
+            <button class="btn btn-danger btn-lg active" role="button" aria-pressed="true" onclick="btnClick()">
+                Delete Profile
+            </button>
         </div>
 
         <h1>Content Comming Soon...</h1>
@@ -34,21 +26,17 @@
 
 <script>
     function btnClick() {
-        confirmLog = confirm("Are you sure you want to delete your profile?")
+        confirmLog = confirm("Are you sure you want to delete your profile?");
         if (confirmLog) {
-            window.location.href = '/delete'
+            window.location.href = "/delete";
         }
     }
 
-    setTimeout(function(){
-        if ($('#message').length > 0) {
-            $('#message').remove();
+    setTimeout(function () {
+        if ($("#message").length > 0) {
+            $("#message").remove();
         }
-    }, 3000)
-    
-
+    }, 3000);
 </script>
-
-
 
 {% endblock %}

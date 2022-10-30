@@ -9,8 +9,8 @@
     <div class="alert" role="alert" id="message">
       {% if messages %}
 
-      {% for message in messages %} 
-      
+      {% for message in messages %}
+
       {{ message }}
 
       {% endfor %}
@@ -44,7 +44,7 @@
     const user_password = password;
     $.ajax({
       type: "POST",
-      url: "/login_api",
+      url: window.location.href,
       data: {
         email: user_email,
         password: user_password,
@@ -54,23 +54,17 @@
         var message = document.getElementById("message");
         if (data.status_code == 200) {
           window.location.href = '/homepage'
-          message.className += " alert-success";
-          message.innerHTML = data.message;
-          setTimeout(function(){
-            message.className -= " alert-success";
-            message.innerHTML = '';
-          }, 3000);
-        } else if (data.status_code == 402){
+        } else if (data.status_code == 402) {
           message.className += " alert-danger";
           message.innerHTML = data.message;
-          setTimeout(function(){
+          setTimeout(function () {
             message.className -= " alert-danger";
             message.innerHTML = '';
           }, 3000);
         } else {
           message.className += " alert-danger";
           message.innerHTML = "Something went worng!";
-          setTimeout(function(){
+          setTimeout(function () {
             message.className -= " alert-danger";
             message.innerHTML = '';
           }, 3000);
