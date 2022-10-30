@@ -1,5 +1,6 @@
 import random
 import re
+from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
 from .models import UsrUser, UsrGender
@@ -97,19 +98,22 @@ class LogIn(View):
             print(e)
             return redirect('login')
 
-    def post(self, request):
-        try:
-            email = request.POST.get('email')
-            password = request.POST.get('password')
-            user = UsrUser.objects.filter(email=email).filter(password=password)
-            if user.exists():
-                request.session['id'] = user[0].id
-                return redirect('homepage')
-            else:
-                return render(request, 'login.html')
-        except Exception as e:
-            print(e)
-            return redirect('login')
+    # def post(self, request):
+    #     try:
+    #         email = request.POST.get('email')
+    #         password = request.POST.get('password')
+    #         user = UsrUser.objects.filter(email=email).filter(password=password)
+    #         if user.exists():
+    #             request.session['id'] = user[0].id
+    #             return redirect('homepage')
+    #         else:
+    #             messages.error(request, "error_message")
+    #             return redirect('login')
+    #             # return render(request, 'login.html', {"email":email})
+    #
+    #     except Exception as e:
+    #         print(e)
+    #         return redirect('login')
 
 
 class Home(View):
@@ -202,7 +206,7 @@ class UpdateProfile(View):
 def logout(request):
     try:
         request.session.clear()
-        return render(request, 'login.html')
+        return redirect('login')
     except Exception as e:
         print(e)
         return redirect('login')
@@ -220,3 +224,15 @@ def delete(request):
     except Exception as e:
         print(e)
         return redirect('login')
+
+
+def login_api(request):
+    email = request.POST['email']
+    password = request.POST['password']
+    user = UsrUser.objects.filter(email=email).filter(password=password)
+    if user.exists():
+        request.session['id'] = user[0].id
+        messages.success(request, "Logged in Successfully")
+        return JsonResponse({"status_code": 200, "message": "Logged in Successfully"})
+    else:
+        return JsonResponse({"status_code": 402, "message": "Invalid Credential's"})

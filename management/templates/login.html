@@ -1,36 +1,83 @@
-{% extends 'base.html' %}
-
-{% block content %}
-
+{% extends 'base.html' %} {% block content %}
 
 <div class="container">
-    <div class="container">
-        <h1>LogIn</h1>
+  <div class="container">
+    <h1>LogIn</h1>
+  </div>
+
+  <div class="container">
+    <div class="alert" role="alert" id="message">
+      {% if messages %}
+
+      {% for message in messages %} 
+      
+      {{ message }}
+
+      {% endfor %}
+
+      {% endif %}
+
     </div>
 
     <div class="container">
-        <form type="submit" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div  class="container">
-                <div class="form-group container">
-                    <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" name="email" class="form-control col" id="exampleInputEmail1" aria-describedby="emailHelp">
-                  </div>
-                
-                <div class="form-group container">
-                  <label for="exampleInputPassword1">Password</label>
-                  <input type="password" name="password" class="form-control" id="exampleInputPassword1">
-                  <br>
-                  <button type="submit" class="btn btn-primary ">Submit</button>
-                </div>
-                
-            </div>
-            
-          </form>
+      <div class="form-group container">
+        <label for="exampleInputEmail1">Email address</label>
+        <input type="email" name="email" id="email" class="form-control col" id="exampleInputEmail1"
+          aria-describedby="emailHelp" />
+      </div>
+
+      <div class="form-group container">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" name="password" id="password" class="form-control" id="exampleInputPassword1" />
+        <br />
+        <button type="" id="submit" class="btn btn-primary" onclick="loginApi(email.value, password.value)">
+          Submit
+        </button>
+      </div>
     </div>
+  </div>
 </div>
 
-
-
+<script>
+  function loginApi(email, password) {
+    const user_email = email;
+    const user_password = password;
+    $.ajax({
+      type: "POST",
+      url: "/login_api",
+      data: {
+        email: user_email,
+        password: user_password,
+        csrfmiddlewaretoken: "{{ csrf_token }}"
+      },
+      success: function (data) {
+        var message = document.getElementById("message");
+        if (data.status_code == 200) {
+          window.location.href = '/homepage'
+          message.className += " alert-success";
+          message.innerHTML = data.message;
+          setTimeout(function(){
+            message.className -= " alert-success";
+            message.innerHTML = '';
+          }, 3000);
+        } else if (data.status_code == 402){
+          message.className += " alert-danger";
+          message.innerHTML = data.message;
+          setTimeout(function(){
+            message.className -= " alert-danger";
+            message.innerHTML = '';
+          }, 3000);
+        } else {
+          message.className += " alert-danger";
+          message.innerHTML = "Something went worng!";
+          setTimeout(function(){
+            message.className -= " alert-danger";
+            message.innerHTML = '';
+          }, 3000);
+        }
+      },
+    });
+  }
+</script>
 
 {% endblock %}

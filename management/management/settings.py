@@ -79,7 +79,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'user_management_db',
         'USER': 'local_user',
-        'PASSWORD': 'Local@123',
+        'PASSWORD': 'Local123',
         'HOST': '127.0.0.1',
         'OPTIONS': {
             'sql_mode': 'traditional'

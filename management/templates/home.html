@@ -9,7 +9,18 @@
     </div>
 
     <div class="container">
-        
+            {% if messages %}
+      
+            {% for message in messages %} 
+            <div class="alert alert-success" role="alert" id="message">
+            
+            {{ message }}
+            </div>
+      
+            {% endfor %}
+      
+            {% endif %}
+      
         <div class="container">
             <a href="/update" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Update Profile</a>
             <button class="btn btn-danger btn-lg active" role="button" aria-pressed="true" onclick="btnClick()">Delete Profile</button>
@@ -22,22 +33,18 @@
 </div>
 
 <script>
-    console.log("loaded");
     function btnClick() {
-        console.log("click")
-
         confirmLog = confirm("Are you sure you want to delete your profile?")
         if (confirmLog) {
             window.location.href = '/delete'
         }
-
-        // if (promtLog === 'delete profile') {
-        //     console.log("delete");
-        // } else {
-            
-        // }
-        
     }
+
+    setTimeout(function(){
+        if ($('#message').length > 0) {
+            $('#message').remove();
+        }
+    }, 3000)
     
 
 </script>
