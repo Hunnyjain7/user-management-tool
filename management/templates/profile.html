@@ -21,11 +21,13 @@
             {% endif %}
 
             <div  class="container">
-                <div class="form-group container">
+                <div class="form-group container col-12">
                     <label for="exampleFormControlFile1">Profile Picture</label>
                     <br>
-                            <img class="rounded-circle col-3" src="/media/{{user.profile_image}}" style="width: 135px; height: 135px;" alt=""> 
-
+                    <img class="rounded-circle col-4" id="img" src="/media/{{user.profile_image}}" style="width: 135px; height: 135px;" alt=""> 
+                    <br>
+                    <br>
+                    <input onchange=file_changed() type=file id=input>
                   </div>
                 <div class="row container">
                     <div class="col">
@@ -86,5 +88,18 @@
           </form>
     </div>
 </div>
+
+<script>
+    function file_changed(){
+  var selectedFile = document.getElementById('input').files[0];
+  var img = document.getElementById('img')
+
+  var reader = new FileReader();
+  reader.onload = function(){
+     img.src = this.result
+  }
+  reader.readAsDataURL(selectedFile);
+ }
+</script>
 
 {% endblock %}

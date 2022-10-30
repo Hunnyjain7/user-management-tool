@@ -31,6 +31,15 @@ class Register(View):
             confirm_password = request.POST.get('confirm_password')
             profile_image = request.FILES.get('profile_image')
             designation = request.POST.get('designation')
+            print(first_name
+                  , last_name
+                  , username
+                  , email
+                  , gender
+                  , mobile_no
+                  , password
+                  , confirm_password,
+                  profile_image, designation)
 
             email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
             email_check = UsrUser.objects.filter(email=email).exists()
@@ -78,10 +87,10 @@ class Register(View):
                     profile_image=profile_image, designation=designation
                 )
                 profile.save()
-                return redirect('login')
+                messages.success(request, "Registration Successful")
+                return JsonResponse({"status_code": 200, "message": "Registration Successful"})
             else:
-                messages.error(request, error_message)
-                return redirect('register')
+                return JsonResponse({"status_code": 402, "message": error_message})
         except Exception as e:
             print(e)
             return redirect('register')

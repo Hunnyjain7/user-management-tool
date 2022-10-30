@@ -1,91 +1,196 @@
-{% extends 'base.html' %}
-
-{% block content %}
+{% extends 'base.html' %} {% block content %}
 
 <div class="container">
-    <div class="container">
-        <h1>Register Yourself!</h1>
-    </div>
+  <div class="container">
+    <h1>Register Yourself!</h1>
+  </div>
 
-    <div class="container">
-        <form type="submit" method="post" enctype="multipart/form-data">
-            {% csrf_token %}
+  <div class="container">
+    <form type="submit" method="post" id="register-form" enctype="multipart/form-data">
+      {% csrf_token %}
+        <div class="alert" role="alert" id="message">
+          {% if messages %}
+    
+          {% for message in messages %}
+    
+          {{ message }}
+    
+          {% endfor %}
+    
+          {% endif %}
+    
+        </div>
 
-            {% if messages %}
-            <div class="alert alert-danger" role="alert">
-                {% for message in messages %}
-                {{ message }}
-                {% endfor %}
-            </div>
-            {% endif %}
+      <div class="container">
+        <div class="row container">
+          <div class="col">
+            <label for="inputState">First name</label>
 
-            <div  class="container">
-                <div class="row container">
-                    <div class="col">
-                    <label for="inputState">First name</label>
+            <input
+              type="text"
+              name="first_name"
+              class="form-control"
+              placeholder="First name"
+              required
+            />
+          </div>
+          <div class="col">
+            <label for="inputState">Last name</label>
 
-                    <input type="text" name="first_name" class="form-control" placeholder="First name" required>
-                    </div>
-                    <div class="col">
-                    <label for="inputState">Last name</label>
+            <input
+              type="text"
+              name="last_name"
+              class="form-control"
+              placeholder="Last name"
+              required
+            />
+          </div>
+        </div>
+        <div class="row container">
+          <div class="col">
+            <label for="inputState">Username</label>
 
-                    <input type="text" name="last_name" class="form-control" placeholder="Last name" required>
-                    </div>
-                </div>
-                <div class="row container">
-                    <div class="col">
-                    <label for="inputState">Username</label>
+            <input
+              type="text"
+              name="username"
+              class="form-control"
+              placeholder="Username"
+              required
+            />
+          </div>
+          <div class="col">
+            <label for="inputState">Gender</label>
+            <select id="inputState" name="gender" class="form-control">
+              <!-- <option name="gender" value="selected" selected>Choose...</option> -->
+              {% for gender in context %}
+              <option value="{{ gender.id }}">
+                {{ gender.gender_initial }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-group container">
+          <label for="exampleFormControlFile1">Profile Picture</label>
+          <input
+            type="file"
+            name="profile_image"
+            class="form-control-file"
+            id="exampleFormControlFile1"
+          />
+        </div>
+        <div class="form-group container">
+          <label for="exampleInputEmail1">Designation</label>
+          <input
+            type="text"
+            name="designation"
+            class="form-control"
+            id="designation"
+            required
+          />
+        </div>
 
-                    <input type="text" name="username" class="form-control" placeholder="Username" required>
-                    </div>
-                    <div class="col">
-                    <label for="inputState">Gender</label>
-                    <select id="inputState" name="gender" class="form-control">
-                        <!-- <option name="gender" value="selected" selected>Choose...</option> -->
-                        {% for gender in context %}
-                        <option  value="{{ gender.id }}">{{ gender.gender_initial }}</option>
-                        {% endfor %}
-                    </select>
-                  
-                    </div>
-                </div>
-                <div class="form-group container">
-                    <label for="exampleFormControlFile1">Profile Picture</label>
-                    <input type="file" name="profile_image" class="form-control-file" id="exampleFormControlFile1">
-                    
-                  </div>
-                <div class="form-group container">
-                  <label for="exampleInputEmail1">Designation</label>
-                  <input type="text" name="designation" class="form-control" id="designation" required>
-                </div>
+        <div class="row container">
+          <div class="col">
+            <label for="exampleInputEmail1">Email address</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control col"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              required
+            />
+          </div>
+          <div class="col">
+            <label>Mobile Number</label>
+            <input
+              type="number"
+              name="mobile_no"
+              class="form-control col"
+              id="exampleInputEmail1"
+              aria-describedby="emailHelp"
+              required
+            />
+          </div>
+        </div>
 
-                <div class="row container">
-                    <div class="col">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" name="email" class="form-control col" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-                    </div>
-                    <div class="col">
-                    <label>Mobile Number</label>
-                    <input type="number" name="mobile_no" class="form-control col" id="exampleInputEmail1" aria-describedby="emailHelp" required>
-                  
-                    </div>
-                </div>
-                
-                <div class="form-group container">
-                  <label for="exampleInputPassword1">Password</label>
-                  <input type="password" name="password" class="form-control" id="exampleInputPassword1" required>
-                </div>
-                <div class="form-group container">
-                  <label for="exampleInputPassword1">Confirm Password</label>
-                  <input type="password" name="confirm_password" class="form-control" id="exampleInputPassword1" required>
-                  <br>
-                  <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-                
-            </div>
-            
-          </form>
-    </div>
+        <div class="form-group container">
+          <label for="exampleInputPassword1">Password</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            id="exampleInputPassword1"
+            required
+          />
+        </div>
+        <div class="form-group container">
+          <label for="exampleInputPassword1">Confirm Password</label>
+          <input
+            type="password"
+            name="confirm_password"
+            class="form-control"
+            id="exampleInputPassword1"
+            required
+          />
+          <br />
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </form>
+  </div>
 </div>
+
+<script>
+  // this is the id of the form
+  $("#register-form").submit(function (e) {
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+    // var user_profile_image;
+    // if (document.getElementsByName('profile_image')[0].value) {
+    //     user_profile_image = document.getElementsByName('profile_image')[0].value
+    // }
+    var form = $(this);
+    var actionUrl = form.attr("action");
+
+    $.ajax({
+      type: "POST",
+      url: actionUrl,
+      data: {
+        first_name: document.getElementsByName('first_name')[0].value,
+        last_name: document.getElementsByName('last_name')[0].value,
+        username: document.getElementsByName('username')[0].value,
+        email: document.getElementsByName('email')[0].value,
+        gender: document.getElementsByName('gender')[0].value,
+        mobile_no: document.getElementsByName('mobile_no')[0].value,
+        password: document.getElementsByName('password')[0].value,
+        confirm_password: document.getElementsByName('confirm_password')[0].value,
+        profile_image: document.getElementsByName('profile_image')[0].value,
+        designation: document.getElementsByName('designation')[0].value,
+        csrfmiddlewaretoken: "{{ csrf_token }}"
+      },
+      success: function (data) {
+        var message = document.getElementById("message");
+        if (data.status_code == 200) {
+          window.location.href = '/login'
+        } else if (data.status_code == 402) {
+          message.className += " alert-danger";
+          message.innerHTML = data.message;
+          setTimeout(function () {
+            message.className -= " alert-danger";
+            message.innerHTML = '';
+          }, 3000);
+        } else {
+          message.className += " alert-danger";
+          message.innerHTML = "Something went worng!";
+          setTimeout(function () {
+            message.className -= " alert-danger";
+            message.innerHTML = '';
+          }, 3000);
+        }
+      },
+    });
+  });
+</script>
 
 {% endblock %}

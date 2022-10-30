@@ -8,11 +8,14 @@
   <div class="container">
     <div class="alert" role="alert" id="message">
       {% if messages %}
-
+      
       {% for message in messages %}
 
+      <div class="alert-{{ message.tags }}" role="alert" id="success-message">
       {{ message }}
+      </div>
 
+      
       {% endfor %}
 
       {% endif %}
@@ -39,6 +42,13 @@
 </div>
 
 <script>
+  setTimeout(function () {
+        if ($("#success-message").length > 0) {
+            $("#success-message").remove();
+        }
+    }, 3000);
+
+
   function loginApi(email, password) {
     const user_email = email;
     const user_password = password;
