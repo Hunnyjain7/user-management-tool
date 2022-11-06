@@ -3,6 +3,8 @@ import re
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.views import View
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from .models import UsrUser, UsrGender
 from django.contrib import messages
 
@@ -31,15 +33,6 @@ class Register(View):
             confirm_password = request.POST.get('confirm_password')
             profile_image = request.FILES.get('profile_image')
             designation = request.POST.get('designation')
-            print(first_name
-                  , last_name
-                  , username
-                  , email
-                  , gender
-                  , mobile_no
-                  , password
-                  , confirm_password,
-                  profile_image, designation)
 
             email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
             email_check = UsrUser.objects.filter(email=email).exists()
@@ -107,20 +100,24 @@ class LogIn(View):
             print(e)
             return redirect('login')
 
-    def post(self, request):
-        try:
-            email = request.POST['email']
-            password = request.POST['password']
-            user = UsrUser.objects.filter(email=email).filter(password=password)
-            if user.exists():
-                request.session['id'] = user[0].id
-                messages.success(request, "Logged in Successfully")
-                return JsonResponse({"status_code": 200, "message": "Logged in Successfully"})
-            else:
-                return JsonResponse({"status_code": 402, "message": "Invalid Credential's"})
-        except Exception as e:
-            print(e)
-            return redirect('login')
+
+@api_view(["POST"])
+@permission_classes((AllowAny,))
+def login_api(request):
+    try:
+        print(request)
+        email = request.POST['email']
+        password = request.POST['password']
+        user = UsrUser.objects.filter(email=email).filter(password=password)
+        if user.exists():
+            request.session['id'] = user[0].id
+            messages.success(request, "Logged in Successfully")
+            return JsonResponse({"status_code": 200, "message": "Logged in Successfully"})
+        else:
+            return JsonResponse({"status_code": 402, "message": "Invalid Credential's"})
+    except Exception as e:
+        print(e)
+        return redirect('login')
 
 
 class Home(View):
@@ -155,10 +152,12 @@ class UpdateProfile(View):
             username = request.POST.get('username')
             email = request.POST.get('email')
             gender = request.POST.get('gender')
+            profile_image = request.FILES.get('profile_image')
+            current_image = request.FILES.get('current_image')
             mobile_no = request.POST.get('mobile_no')
             designation = request.POST.get('designation')
             user = UsrUser.objects.get(id=request.session['id'])
-
+            print(current_image, profile_image)
             error_message = None
             email_regex = r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b'
             if user.email != email:
@@ -194,12 +193,20 @@ class UpdateProfile(View):
 
             if not error_message:
                 gender_obj = UsrGender.objects.get(id=gender)
-                profile = UsrUser(
-                    id=user.id, first_name=first_name, last_name=last_name, username=username, email=email,
-                    gender=gender_obj, mobile_no=int(mobile_no), password=user.password, user_code=user.user_code,
-                    profile_image=user.profile_image, designation=designation
-                )
-                profile.save()
+                if profile_image:
+                    profile = UsrUser(
+                        id=user.id, first_name=first_name, last_name=last_name, username=username, email=email,
+                        gender=gender_obj, mobile_no=int(mobile_no), password=user.password, user_code=user.user_code,
+                        designation=designation, profile_image=profile_image
+                    )
+                    profile.save()
+                else:
+                    UsrUser.objects.select_for_update().filter(id=user.id).update(first_name=first_name,
+                                                                                  last_name=last_name,
+                                                                                  username=username, email=email,
+                                                                                  gender=gender_obj,
+                                                                                  mobile_no=int(mobile_no),
+                                                                                  designation=designation)
                 return redirect('homepage')
             else:
                 messages.error(request, error_message)

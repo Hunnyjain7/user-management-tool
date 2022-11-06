@@ -54,13 +54,14 @@
     const user_password = password;
     $.ajax({
       type: "POST",
-      url: window.location.href,
+      url: '/login_api',
       data: {
         email: user_email,
         password: user_password,
         csrfmiddlewaretoken: "{{ csrf_token }}"
       },
       success: function (data) {
+        console.log(data);
         var message = document.getElementById("message");
         if (data.status_code == 200) {
           window.location.href = '/homepage'

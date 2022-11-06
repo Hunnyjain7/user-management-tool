@@ -6,7 +6,6 @@ from django.db import models
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
-# Create your models here.
 class UsrGender(models.Model):
     gender_name = models.CharField(max_length=20)
     gender_initial = models.CharField(max_length=1)
@@ -33,7 +32,7 @@ class UsrUser(models.Model):
         if self.profile_image:
             image = Image.open(self.profile_image)
             bytes_img = BytesIO()
-            check_size = self.profile_image.size / 1024 # noqa
+            check_size = self.profile_image.size / 1024  # noqa
             if check_size > 1024:
                 image.resize((1024, 1024))
             image.save(bytes_img, format='JPEG', quality=60)

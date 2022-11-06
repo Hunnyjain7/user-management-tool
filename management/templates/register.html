@@ -8,18 +8,18 @@
   <div class="container">
     <form type="submit" method="post" id="register-form" enctype="multipart/form-data">
       {% csrf_token %}
-        <div class="alert" role="alert" id="message">
-          {% if messages %}
-    
-          {% for message in messages %}
-    
-          {{ message }}
-    
-          {% endfor %}
-    
-          {% endif %}
-    
-        </div>
+      <div class="alert" role="alert" id="message">
+        {% if messages %}
+
+        {% for message in messages %}
+
+        {{ message }}
+
+        {% endfor %}
+
+        {% endif %}
+
+      </div>
 
       <div class="container">
         <div class="row container">
@@ -61,25 +61,21 @@
           <div class="col">
             <label for="inputState">Gender</label>
             <select id="inputState" name="gender" class="form-control">
-              <!-- <option name="gender" value="selected" selected>Choose...</option> -->
-              {% for gender in context %}
-              <option value="{{ gender.id }}">
-                {{ gender.gender_initial }}
-              </option>
-              {% endfor %}
-            </select>
-          </div>
+              <option name="gender" value="selected" selected>Choose...</option>
+          {% for gender in context %}
+          <option value="{{ gender.id }}">
+            {{ gender.gender_initial }}
+          </option>
+          {% endfor %}
+          </select>
         </div>
-        <div class="form-group container">
-          <label for="exampleFormControlFile1">Profile Picture</label>
-          <input
-            type="file"
-            name="profile_image"
-            class="form-control-file"
-            id="exampleFormControlFile1"
-          />
-        </div>
-        <div class="form-group container">
+      </div>
+      <div class="form-group container">
+        <label for="exampleFormControlFile1">Profile Picture</label>
+        <input type="file" id="profile_image" name="profile_image" class="form-control-file"
+          id="exampleFormControlFile1" />
+      </div>
+      <div class="form-group container">
           <label for="exampleInputEmail1">Designation</label>
           <input
             type="text"
@@ -125,50 +121,36 @@
             required
           />
         </div>
-        <div class="form-group container">
-          <label for="exampleInputPassword1">Confirm Password</label>
-          <input
+      <div class="form-group container">
+        <label for="exampleInputPassword1">Confirm Password</label>
+        <input
             type="password"
             name="confirm_password"
             class="form-control"
             id="exampleInputPassword1"
             required
           />
-          <br />
-          <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Submit</button>
       </div>
-    </form>
   </div>
+  </form>
+</div>
 </div>
 
-<script>
-  // this is the id of the form
-  $("#register-form").submit(function (e) {
-    e.preventDefault(); // avoid to execute the actual submit of the form.
-    // var user_profile_image;
-    // if (document.getElementsByName('profile_image')[0].value) {
-    //     user_profile_image = document.getElementsByName('profile_image')[0].value
-    // }
-    var form = $(this);
-    var actionUrl = form.attr("action");
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+   
 
-    $.ajax({
-      type: "POST",
-      url: actionUrl,
-      data: {
-        first_name: document.getElementsByName('first_name')[0].value,
-        last_name: document.getElementsByName('last_name')[0].value,
-        username: document.getElementsByName('username')[0].value,
-        email: document.getElementsByName('email')[0].value,
-        gender: document.getElementsByName('gender')[0].value,
-        mobile_no: document.getElementsByName('mobile_no')[0].value,
-        password: document.getElementsByName('password')[0].value,
-        confirm_password: document.getElementsByName('confirm_password')[0].value,
-        profile_image: document.getElementsByName('profile_image')[0].value,
-        designation: document.getElementsByName('designation')[0].value,
-        csrfmiddlewaretoken: "{{ csrf_token }}"
-      },
+<script>
+
+$('#register-form').submit(function(e){
+  e.preventDefault();
+  $form = $(this)
+  var formData = new FormData(this);
+  $.ajax({
+      url: window.location.pathname,
+      type: 'POST',
+      data: formData,
       success: function (data) {
         var message = document.getElementById("message");
         if (data.status_code == 200) {
@@ -188,9 +170,13 @@
             message.innerHTML = '';
           }, 3000);
         }
-      },
+        },
+      cache: false,
+      contentType: false,
+      processData: false
     });
   });
+
 </script>
 
 {% endblock %}
